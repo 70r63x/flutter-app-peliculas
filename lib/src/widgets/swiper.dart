@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_peliculas/src/models/pelicula_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class SwiperTarjetas extends StatelessWidget {
 
-  final List<dynamic> peliculas;
+  final List<Pelicula> peliculas;
 
   SwiperTarjetas({@required this.peliculas});
 
@@ -14,18 +15,23 @@ class SwiperTarjetas extends StatelessWidget {
     final _screenSize = MediaQuery.of(context).size;
 
     return Container(
+      padding: EdgeInsets.only(top: 10),
       child: Swiper(
         layout: SwiperLayout.STACK,
         itemWidth: _screenSize.width * 0.7,
-        itemHeight: _screenSize.width * 0.5,
+        itemHeight: _screenSize.height * 0.5,
         itemBuilder: (BuildContext context,int index){
           return ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.network("https://upload.wikimedia.org/wikipedia/commons/9/91/Oahu_Landscape.jpg",fit: BoxFit.cover,)
+            child: FadeInImage(
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              image: NetworkImage(peliculas[index].getPosterImg()),
+              fit: BoxFit.cover,
+            )
           );
         },
         itemCount: peliculas.length,
-        pagination: SwiperPagination(),
+        // pagination: SwiperPagination(),
         // control: SwiperControl(),
       ),
     );

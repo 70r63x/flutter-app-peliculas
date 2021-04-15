@@ -10,7 +10,7 @@ class PeliculasProviders {
   String _languaje = 'es-CO';
 
   Future<List<Pelicula>> getEnCines() async{
-    final url = Uri.https(_url, '3//movie/now_playing', {
+    final url = Uri.https(_url, '3/movie/now_playing', {
       'api_key': _apikey,
       'language': _languaje,
     });

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_app_peliculas/src/providers/peliculas_provider.dart';
+
 import 'package:flutter_app_peliculas/src/widgets/swiper.dart';
 
 class HomePage extends StatelessWidget {
+
+  final peluculasProvider = PeliculasProviders();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +33,23 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _swiperTarjetas() {
-    return SwiperTarjetas(
-      peliculas: [1,2,3,4,5],
+    return FutureBuilder(
+      future: peluculasProvider.getEnCines(),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        
+        if (snapshot.hasData) {
+          return SwiperTarjetas(
+            peliculas: snapshot.data,
+          );
+        } else {
+          return Container(
+            height: 400.0,
+            child: Center(
+              child: CircularProgressIndicator()
+            ),
+          );
+        }
+      },
     );
   }
 }

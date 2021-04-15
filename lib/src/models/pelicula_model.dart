@@ -66,4 +66,13 @@ class Pelicula {
     overview         = json['overview'];
     releaseDate      = json['release_date'];
   }
+
+  getPosterImg() {
+    if (posterPath == null) {
+      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Flag_of_None.svg/1024px-Flag_of_None.svg.png';
+    } else {
+      return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    }
+    
+  }
 }
