@@ -10,19 +10,23 @@ class PeliculasProviders {
   String _url = 'api.themoviedb.org';
   String _languaje = 'es-CO';
   int _popularesPaqe = 0;
+  bool _cargando = false;
 
   List<Pelicula> _populares = List.empty(growable: true);
-  final _popularesStreamController = StreamController<List<Pelicula>>.broadcast();
+  final _popularesStreamController =
+      StreamController<List<Pelicula>>.broadcast();
 
-  Function(List<Pelicula>) get polularesSink => _popularesStreamController.sink.add;
+  Function(List<Pelicula>) get polularesSink =>
+      _popularesStreamController.sink.add;
 
-  Stream<List<Pelicula>> get popularesStream => _popularesStreamController.stream;
+  Stream<List<Pelicula>> get popularesStream =>
+      _popularesStreamController.stream;
 
-  void disposeStreams(){
+  void disposeStreams() {
     _popularesStreamController?.close();
   }
 
-  Future<List<Pelicula>> _procesarRespuesta (Uri url) async{
+  Future<List<Pelicula>> _procesarRespuesta(Uri url) async {
     final resp = await http.get(url);
     final decodeData = json.decode(resp.body);
     final peliculas = Peliculas.fromJsonList(decodeData['results']);
@@ -30,7 +34,7 @@ class PeliculasProviders {
     return peliculas.items;
   }
 
-  Future<List<Pelicula>> getEnCines() async{
+  Future<List<Pelicula>> getEnCines() async {
     final url = Uri.https(_url, '3/movie/now_playing', {
       'api_key': _apikey,
       'language': _languaje,
@@ -39,7 +43,10 @@ class PeliculasProviders {
     return await _procesarRespuesta(url);
   }
 
-  Future<List<Pelicula>> getPopulares() async{
+  Future<List<Pelicula>> getPopulares() async {
+    if (_cargando) return [];
+
+    _cargando = true;
     _popularesPaqe++;
 
     final url = Uri.https(_url, '3/movie/popular', {
@@ -53,6 +60,7 @@ class PeliculasProviders {
     _populares.addAll(resp);
     polularesSink(_populares);
 
+    _cargando = false;
     return resp;
   }
 }
