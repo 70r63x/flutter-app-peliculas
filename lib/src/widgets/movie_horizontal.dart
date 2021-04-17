@@ -33,17 +33,21 @@ class MovieHorizontal extends StatelessWidget {
   }
 
   Widget _tarjeta(BuildContext context, Pelicula pelicula) {
+    pelicula.uniqueId = '${pelicula.id}-swiper';
     final tarjeta = Container(
       margin: EdgeInsets.only(right: 15),
       child: Column(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-              placeholder: AssetImage('assets/img/no-image.jpg'),
-              image: NetworkImage(pelicula.getPosterImg()),
-              fit: BoxFit.cover,
-              height: 160,
+          Hero(
+            tag: pelicula.uniqueId,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/img/no-image.jpg'),
+                image: NetworkImage(pelicula.getPosterImg()),
+                fit: BoxFit.cover,
+                height: 160,
+              ),
             ),
           ),
           SizedBox(
@@ -66,32 +70,32 @@ class MovieHorizontal extends StatelessWidget {
     );
   }
 
-  List<Widget> _tarjetas(BuildContext context) {
-    return peliculas.map((pelicula) {
-      return Container(
-        margin: EdgeInsets.only(right: 15),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/img/no-image.jpg'),
-                image: NetworkImage(pelicula.getPosterImg()),
-                fit: BoxFit.cover,
-                height: 160,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              pelicula.title,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.caption,
-            )
-          ],
-        ),
-      );
-    }).toList();
-  }
+  // List<Widget> _tarjetas(BuildContext context) {
+  //   return peliculas.map((pelicula) {
+  //     return Container(
+  //       margin: EdgeInsets.only(right: 15),
+  //       child: Column(
+  //         children: <Widget>[
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(20),
+  //             child: FadeInImage(
+  //               placeholder: AssetImage('assets/img/no-image.jpg'),
+  //               image: NetworkImage(pelicula.getPosterImg()),
+  //               fit: BoxFit.cover,
+  //               height: 160,
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 5,
+  //           ),
+  //           Text(
+  //             pelicula.title,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: Theme.of(context).textTheme.caption,
+  //           )
+  //         ],
+  //       ),
+  //     );
+  //   }).toList();
+  // }
 }
